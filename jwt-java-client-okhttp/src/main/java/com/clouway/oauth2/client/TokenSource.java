@@ -1,9 +1,8 @@
 package com.clouway.oauth2.client;
 
-import com.google.common.base.Optional;
-
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * TokenSource is a generic source for retrieving a new tokens.

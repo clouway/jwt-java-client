@@ -1,9 +1,8 @@
 package com.clouway.oauth2.client;
 
-import com.google.common.base.Optional;
-
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**

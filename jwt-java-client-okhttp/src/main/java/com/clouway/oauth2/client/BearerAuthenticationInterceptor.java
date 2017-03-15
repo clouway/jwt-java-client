@@ -1,14 +1,15 @@
 package com.clouway.oauth2.client;
 
-import com.google.common.base.Optional;
 import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 
 /**
- * BearerTokenAuthenticator is an HTTP interceptor for {@link okhttp3.OkHttpClient} which uses access token for
+ * BearerTokenAuthenticator is an HTTP interceptor for {@link OkHttpClient} which uses access token for
  * authentication to the remote service.
  *
  * @author Miroslav Genov (miroslav.genov@clouway.com)

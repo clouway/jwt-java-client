@@ -2,7 +2,6 @@ package com.clouway.oauth2.client;
 
 import com.github.restdriver.clientdriver.ClientDriverRequest.Method;
 import com.github.restdriver.clientdriver.ClientDriverRule;
-import com.google.common.base.Optional;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -12,6 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static com.github.restdriver.clientdriver.RestClientDriver.giveEmptyResponse;
 import static com.github.restdriver.clientdriver.RestClientDriver.onRequestTo;
@@ -63,7 +63,7 @@ public class BearerAuthenticationInterceptorTest {
 
     context.checking(new Expectations() {{
       oneOf(tokenSource).token(with(any(Date.class)));
-      will(returnValue(Optional.absent()));
+      will(returnValue(Optional.empty()));
     }});
 
     BearerAuthenticationInterceptor bearerAuthenticator = new BearerAuthenticationInterceptor(tokenSource);

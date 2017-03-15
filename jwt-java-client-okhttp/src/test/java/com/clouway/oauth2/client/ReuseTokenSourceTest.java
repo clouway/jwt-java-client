@@ -1,6 +1,6 @@
 package com.clouway.oauth2.client;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Rule;
@@ -32,7 +32,7 @@ public class ReuseTokenSourceTest {
     }});
 
     ReuseTokenSource tokenSource = new ReuseTokenSource(null, source);
-    Optional<Token> token = tokenSource.token(new Date());
+    java.util.Optional<Token> token = tokenSource.token(new Date());
 
     assertThat(token.isPresent(), is(true));
     assertThat(token.get().accessToken(), is(equalTo("::any access token::")));
@@ -44,11 +44,11 @@ public class ReuseTokenSourceTest {
 
     context.checking(new Expectations() {{
       oneOf(source).token(with(any(Date.class)));
-      will(returnValue(Optional.absent()));
+      will(returnValue(Optional.empty()));
     }});
 
     ReuseTokenSource tokenSource = new ReuseTokenSource(null, source);
-    Optional<Token> token = tokenSource.token(new Date());
+    java.util.Optional<Token> token = tokenSource.token(new Date());
 
     assertThat(token.isPresent(), is(false));
   }
@@ -65,8 +65,8 @@ public class ReuseTokenSourceTest {
     }});
 
     ReuseTokenSource tokenSource = new ReuseTokenSource(null, source);
-    Optional<Token> firstToken = tokenSource.token(new Date());
-    Optional<Token> secondToken = tokenSource.token(new Date());
+    java.util.Optional<Token> firstToken = tokenSource.token(new Date());
+    java.util.Optional<Token> secondToken = tokenSource.token(new Date());
 
     assertThat(firstToken.get(), is(sameInstance(secondToken.get())));
   }
@@ -88,7 +88,7 @@ public class ReuseTokenSourceTest {
 
     ReuseTokenSource tokenSource = new ReuseTokenSource(null, source);
     tokenSource.token(fiveSecondsInTheFuture);
-    Optional<Token> token = tokenSource.token(thirtySecondsInTheFuture);
+    java.util.Optional<Token> token = tokenSource.token(thirtySecondsInTheFuture);
 
     assertThat(token.isPresent(), is(true));
     assertThat(token.get().accessToken(), is(equalTo("::second access token::")));
@@ -101,11 +101,11 @@ public class ReuseTokenSourceTest {
 
     context.checking(new Expectations() {{
       oneOf(source).token(anyInstantTime);
-      will(returnValue(Optional.absent()));
+      will(returnValue(Optional.empty()));
     }});
 
     ReuseTokenSource tokenSource = new ReuseTokenSource(null, source);
-    Optional<Token> token = tokenSource.token(anyInstantTime);
+    java.util.Optional<Token> token = tokenSource.token(anyInstantTime);
 
     assertThat(token.isPresent(), is(false));
   }

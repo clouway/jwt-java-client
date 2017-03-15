@@ -1,10 +1,11 @@
 package com.clouway.oauth2.client;
 
-import com.google.common.base.Optional;
+import com.clouway.oauth2.client.Pem.Block;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient.Builder;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONException;
@@ -18,6 +19,7 @@ import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,7 +32,7 @@ class JwtTokenSource implements TokenSource {
   private final JwtConfig config;
 
   // TODO(mgenov): connect and read timeouts could be moved as params
-  private final OkHttpClient client = new OkHttpClient.Builder()
+  private final OkHttpClient client = new Builder()
               .connectTimeout(3000, TimeUnit.SECONDS)
               .readTimeout(3000, TimeUnit.SECONDS)
               .build();
@@ -83,7 +85,7 @@ class JwtTokenSource implements TokenSource {
 
   private PrivateKey readPrivateKey() throws IOException {
     try {
-      Pem.Block block = new Pem().parse(new ByteArrayInputStream(config.privateKey));
+      Block block = new Pem().parse(new ByteArrayInputStream(config.privateKey));
       KeyFactory kf = KeyFactory.getInstance("RSA");
       return kf.generatePrivate(new PKCS8EncodedKeySpec(block.getBytes()));
     } catch (NoSuchAlgorithmException e) {

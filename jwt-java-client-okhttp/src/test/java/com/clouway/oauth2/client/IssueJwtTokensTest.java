@@ -1,9 +1,9 @@
 package com.clouway.oauth2.client;
 
+import com.clouway.oauth2.client.JwtConfig.Builder;
 import com.github.restdriver.clientdriver.ClientDriverRequest.Method;
 import com.github.restdriver.clientdriver.ClientDriverResponse;
 import com.github.restdriver.clientdriver.ClientDriverRule;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.json.JSONObject;
 import org.junit.Rule;
@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
+import java.util.Optional;
 
 import static com.github.restdriver.clientdriver.RestClientDriver.giveEmptyResponse;
 import static com.github.restdriver.clientdriver.RestClientDriver.giveResponse;
@@ -70,7 +71,7 @@ public class IssueJwtTokensTest {
             )
     );
 
-    JwtConfig config = new JwtConfig.Builder("2000001@apps.telcongserviceaccount.com", clientDriver.getBaseUrl() + "/o/oauth2/v1/token", PRIVATE_KEY.getBytes())
+    JwtConfig config = new Builder("2000001@apps.telcongserviceaccount.com", clientDriver.getBaseUrl() + "/o/oauth2/v1/token", PRIVATE_KEY.getBytes())
             .subject("someuser@clouway.com")
             .build();
 
@@ -90,7 +91,7 @@ public class IssueJwtTokensTest {
             giveJsonResponse(ImmutableMap.<String, Object>of("error", "invalid_grant")).withStatus(400)
     );
 
-    JwtConfig config = new JwtConfig.Builder("2000001@apps.telcongserviceaccount.com", clientDriver.getBaseUrl() + "/o/oauth2/v1/token", PRIVATE_KEY.getBytes())
+    JwtConfig config = new Builder("2000001@apps.telcongserviceaccount.com", clientDriver.getBaseUrl() + "/o/oauth2/v1/token", PRIVATE_KEY.getBytes())
             .subject("someuser@clouway.com")
             .build();
 
@@ -105,7 +106,7 @@ public class IssueJwtTokensTest {
             giveEmptyResponse().withStatus(500)
     );
 
-    JwtConfig config = new JwtConfig.Builder("2000001@apps.telcongserviceaccount.com", clientDriver.getBaseUrl() + "/o/oauth2/v1/token", PRIVATE_KEY.getBytes())
+    JwtConfig config = new Builder("2000001@apps.telcongserviceaccount.com", clientDriver.getBaseUrl() + "/o/oauth2/v1/token", PRIVATE_KEY.getBytes())
             .subject("someuser@clouway.com")
             .build();
 
