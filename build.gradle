@@ -22,7 +22,7 @@ allprojects {
   sourceCompatibility = 1.8
   targetCompatibility = 1.8
 
-  group = 'com.clouway.oauth2'
+  group = 'com.clouway.security'
   version = '0.0.1'
 
   modifyPom {
