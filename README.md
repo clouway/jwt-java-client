@@ -2,7 +2,7 @@
  
 A Client library for OAuth2 which uses JWT for the generation of access tokens.
  
-#### okhttp adapter
+#### OkHttp adapter
 
 ```java
   JwtConfig config = new JwtConfig.Builder(
@@ -21,3 +21,21 @@ A Client library for OAuth2 which uses JWT for the generation of access tokens.
 
    // do HTTP call
 ```
+
+#### Maven dependency 
+
+```xml  
+    <dependency>
+      <groupId>com.clouway.security</groupId>
+      <artifactId>jwt-java-client-okhttp</artifactId>
+      <version>0.0.1</version>
+    </dependency>
+```
+
+#### Gradle dependency
+
+```groovy
+    compile 'com.clouway.security:jwt-java-client-okhttp:0.0.1'
+```
+
+
