@@ -21,6 +21,7 @@ import static com.github.restdriver.clientdriver.RestClientDriver.onRequestTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * @author Miroslav Genov (miroslav.genov@clouway.com)
@@ -84,19 +85,27 @@ public class IssueJwtTokensTest {
     assertThat(possibleToken.get().isAvailableAt(new Date()), is(true));
   }
 
-  @Test(expected = IOException.class)
+  @Test
   public void gotUnexpectedResponse() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-    clientDriver.addExpectation(
-            onRequestTo("/o/oauth2/v1/token").withMethod(Method.POST),
-            giveJsonResponse(ImmutableMap.<String, Object>of("error", "invalid_grant")).withStatus(400)
-    );
+    try {
+      clientDriver.addExpectation(
+              onRequestTo("/o/oauth2/v1/token").withMethod(Method.POST),
+              giveJsonResponse(ImmutableMap.of("error", "invalid_grant")).withStatus(400)
+      );
 
-    JwtConfig config = new Builder("2000001@apps.telcongserviceaccount.com", clientDriver.getBaseUrl() + "/o/oauth2/v1/token", PRIVATE_KEY.getBytes())
-            .subject("someuser@clouway.com")
-            .build();
+      JwtConfig config = new Builder("2000001@apps.telcongserviceaccount.com", clientDriver.getBaseUrl() + "/o/oauth2/v1/token", PRIVATE_KEY.getBytes())
+              .subject("someuser@clouway.com")
+              .build();
 
-    TokenSource tokenSource = config.tokenSource();
-    tokenSource.token(new Date());
+      TokenSource tokenSource = config.tokenSource();
+      tokenSource.token(new Date());
+
+      fail("IOException was not thrown on token endpoint failure.");
+    } catch (IOException e) {
+      assertThat(e.getMessage(),
+              equalTo("Got unexpected response from the identity provider: {\"error\":\"invalid_grant\"}")
+      );
+    }
   }
 
   @Test(expected = IOException.class)

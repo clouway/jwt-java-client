@@ -63,7 +63,7 @@ class JwtTokenSource implements TokenSource {
 
     Response response = client.newCall(request).execute();
     if (!response.isSuccessful()) {
-      throw new IOException("Got unexpected response from the Identity Provider: " + response);
+      throw new IOException("Got unexpected response from the identity provider: " + response.body().string());
     }
 
     try {
