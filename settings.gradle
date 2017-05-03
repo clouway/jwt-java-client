@@ -1,1 +1,1 @@
-include 'jwt-java-client-okhttp'
+include 'core', 'jwt-java-client-okhttp', 'jwt-java-client-google', 'jwt-java-client-testing'

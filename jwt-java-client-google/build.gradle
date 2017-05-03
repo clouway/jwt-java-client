@@ -13,13 +13,16 @@ javadoc {
   classpath = configurations.compile + configurations.providedCompile
 }
 
-description = 'jwt-java-client-okhttp'
+description = 'jwt-java-client-google'
 
 dependencies {
   compile project(':core')
-  
+
   compile 'com.google.guava:guava:18.0'
-  compile 'com.squareup.okhttp3:okhttp:3.6.0'
+  
+  compile 'com.google.http-client:google-http-client:1.22.0'
+  compile 'com.google.http-client:google-http-client-gson:1.22.0'
+  compile 'com.google.http-client:google-http-client-appengine:1.22.0'
 
   testCompile project(':jwt-java-client-testing')
   testCompile 'com.github.rest-driver:rest-client-driver:1.1.45'

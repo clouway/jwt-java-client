@@ -13,15 +13,14 @@ javadoc {
   classpath = configurations.compile + configurations.providedCompile
 }
 
-description = 'jwt-java-client-okhttp'
+description = 'core'
 
 dependencies {
-  compile project(':core')
-  
   compile 'com.google.guava:guava:18.0'
-  compile 'com.squareup.okhttp3:okhttp:3.6.0'
+  compile 'org.json:json:20160810'
 
-  testCompile project(':jwt-java-client-testing')
+  compile 'io.jsonwebtoken:jjwt:0.7.0'
+
   testCompile 'com.github.rest-driver:rest-client-driver:1.1.45'
   testCompile 'junit:junit:4.11', 'org.jmock:jmock:2.6.0', 'org.jmock:jmock-junit4:2.8.2'
 }

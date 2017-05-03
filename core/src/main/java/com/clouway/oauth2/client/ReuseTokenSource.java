@@ -1,8 +1,9 @@
 package com.clouway.oauth2.client;
 
+import com.google.common.base.Optional;
+
 import java.io.IOException;
 import java.util.Date;
-import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -24,7 +25,7 @@ class ReuseTokenSource implements TokenSource {
   // A Mutable state which is protected by {@link ReentrantLock}
   private Token token;
 
-  public ReuseTokenSource(Token token, TokenSource source) {
+  ReuseTokenSource(Token token, TokenSource source) {
     this.token = token;
     this.source = source;
   }

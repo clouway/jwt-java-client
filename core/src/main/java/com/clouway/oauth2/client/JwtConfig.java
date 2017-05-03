@@ -12,6 +12,10 @@ import java.util.List;
  */
 public final class JwtConfig {
 
+  public static Builder newConfig(String email, String tokenUrl, byte[] privateKey) {
+    return new Builder(email, tokenUrl, privateKey);
+  }
+
   public static class Builder {
     private String email;
     private List<String> scopes = Lists.newLinkedList();
@@ -48,14 +52,5 @@ public final class JwtConfig {
     this.privateKey = builder.privateKey;
     this.subject = builder.subject;
     this.tokenUrl = builder.tokenUrl;
-  }
-
-  /**
-   * Gets a token source which uses JWT configuration for accessing JWT tokens.
-   *
-   * @return a TokenSource which uses the JWT configuration for retrieving of access tokens.
-   */
-  public TokenSource tokenSource() {
-    return new ReuseTokenSource(null, new JwtTokenSource(this));
   }
 }

@@ -19,11 +19,11 @@ allprojects {
   apply plugin: 'java'
   apply plugin: 'com.bmuschko.nexus'
 
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
+  sourceCompatibility = 1.7
+  targetCompatibility = 1.7
 
   group = 'com.clouway.security'
-  version = '0.0.1'
+  version = '0.0.2'
 
   modifyPom {
     project {
