@@ -1,4 +1,4 @@
-package com.clouway.oauth2.client;
+package com.clouway.oauth2.client.internal;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;

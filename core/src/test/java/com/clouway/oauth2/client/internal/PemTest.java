@@ -1,5 +1,6 @@
-package com.clouway.oauth2.client;
+package com.clouway.oauth2.client.internal;
 
+import com.clouway.oauth2.client.internal.Pem;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 

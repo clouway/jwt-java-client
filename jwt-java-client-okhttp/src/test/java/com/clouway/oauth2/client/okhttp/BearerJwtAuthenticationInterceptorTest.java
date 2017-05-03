@@ -1,7 +1,10 @@
-package com.clouway.oauth2.client;
+package com.clouway.oauth2.client.okhttp;
 
+import com.clouway.oauth2.client.Token;
+import com.clouway.oauth2.client.TokenSource;
 import com.github.restdriver.clientdriver.ClientDriverRequest.Method;
 import com.github.restdriver.clientdriver.ClientDriverRule;
+import com.google.common.base.Optional;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -11,7 +14,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Date;
-import java.util.Optional;
 
 import static com.github.restdriver.clientdriver.RestClientDriver.giveEmptyResponse;
 import static com.github.restdriver.clientdriver.RestClientDriver.onRequestTo;
@@ -21,7 +23,7 @@ import static org.junit.Assert.assertThat;
 /**
  * @author Miroslav Genov (miroslav.genov@clouway.com)
  */
-public class BearerAuthenticationInterceptorTest {
+public class BearerJwtAuthenticationInterceptorTest {
 
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
@@ -40,7 +42,7 @@ public class BearerAuthenticationInterceptorTest {
       will(returnValue(Optional.of(new Token("::any token::", anyTime))));
     }});
 
-    BearerAuthenticationInterceptor bearerAuthenticator = new BearerAuthenticationInterceptor(tokenSource);
+    BearerJwtAuthenticationInterceptor bearerAuthenticator = new BearerJwtAuthenticationInterceptor(tokenSource);
     OkHttpClient client = new OkHttpClient.Builder().addInterceptor(bearerAuthenticator).build();
 
     clientDriver.addExpectation(
@@ -63,10 +65,10 @@ public class BearerAuthenticationInterceptorTest {
 
     context.checking(new Expectations() {{
       oneOf(tokenSource).token(with(any(Date.class)));
-      will(returnValue(Optional.empty()));
+      will(returnValue(Optional.absent()));
     }});
 
-    BearerAuthenticationInterceptor bearerAuthenticator = new BearerAuthenticationInterceptor(tokenSource);
+    BearerJwtAuthenticationInterceptor bearerAuthenticator = new BearerJwtAuthenticationInterceptor(tokenSource);
     OkHttpClient client = new OkHttpClient.Builder().addInterceptor(bearerAuthenticator).build();
 
     clientDriver.addExpectation(

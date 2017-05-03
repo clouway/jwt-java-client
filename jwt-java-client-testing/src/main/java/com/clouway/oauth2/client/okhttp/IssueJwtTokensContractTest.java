@@ -1,9 +1,14 @@
-package com.clouway.oauth2.client;
+package com.clouway.oauth2.client.okhttp;
 
+import com.clouway.oauth2.client.JwtConfig;
 import com.clouway.oauth2.client.JwtConfig.Builder;
+import com.clouway.oauth2.client.Token;
+import com.clouway.oauth2.client.TokenSource;
+import com.clouway.oauth2.client.TokenSources;
 import com.github.restdriver.clientdriver.ClientDriverRequest.Method;
 import com.github.restdriver.clientdriver.ClientDriverResponse;
 import com.github.restdriver.clientdriver.ClientDriverRule;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.json.JSONObject;
 import org.junit.Rule;
@@ -13,7 +18,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
-import java.util.Optional;
 
 import static com.github.restdriver.clientdriver.RestClientDriver.giveEmptyResponse;
 import static com.github.restdriver.clientdriver.RestClientDriver.giveResponse;
@@ -26,7 +30,7 @@ import static org.junit.Assert.fail;
 /**
  * @author Miroslav Genov (miroslav.genov@clouway.com)
  */
-public class IssueJwtTokensTest {
+public abstract class IssueJwtTokensContractTest {
 
   @Rule
   public ClientDriverRule clientDriver = new ClientDriverRule();
@@ -76,7 +80,7 @@ public class IssueJwtTokensTest {
             .subject("someuser@clouway.com")
             .build();
 
-    TokenSource tokenSource = config.tokenSource();
+    TokenSource tokenSource = TokenSources.reusableTokenSource(tokenSource(config));
 
     Optional<Token> possibleToken = tokenSource.token(new Date());
 
@@ -85,19 +89,20 @@ public class IssueJwtTokensTest {
     assertThat(possibleToken.get().isAvailableAt(new Date()), is(true));
   }
 
+
   @Test
   public void gotUnexpectedResponse() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
     try {
       clientDriver.addExpectation(
               onRequestTo("/o/oauth2/v1/token").withMethod(Method.POST),
-              giveJsonResponse(ImmutableMap.of("error", "invalid_grant")).withStatus(400)
+              giveJsonResponse(ImmutableMap.<String, Object>of("error", "invalid_grant")).withStatus(400)
       );
 
       JwtConfig config = new Builder("2000001@apps.telcongserviceaccount.com", clientDriver.getBaseUrl() + "/o/oauth2/v1/token", PRIVATE_KEY.getBytes())
               .subject("someuser@clouway.com")
               .build();
 
-      TokenSource tokenSource = config.tokenSource();
+      TokenSource tokenSource = TokenSources.reusableTokenSource(tokenSource(config));
       tokenSource.token(new Date());
 
       fail("IOException was not thrown on token endpoint failure.");
@@ -119,9 +124,11 @@ public class IssueJwtTokensTest {
             .subject("someuser@clouway.com")
             .build();
 
-    TokenSource tokenSource = config.tokenSource();
+    TokenSource tokenSource = TokenSources.reusableTokenSource(tokenSource(config));
     tokenSource.token(new Date());
   }
+
+  protected abstract TokenSource tokenSource(JwtConfig config);
 
   private ClientDriverResponse giveJsonResponse(ImmutableMap<String, Object> jsonObject) {
     return giveResponse(asJson(jsonObject), "application/json");
